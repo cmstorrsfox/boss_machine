@@ -9,6 +9,7 @@ const {
     updateInstanceInDatabase,
     deleteFromDatabasebyId
 } = require('./db');
+const checkMillionDollarIdea = require('./checkMillionDollarIdea');
 
 ideasRouter.param('ideaId', (req, res, next, id) => {
     const idea = getFromDatabaseById('ideas', id);
@@ -21,24 +22,24 @@ ideasRouter.param('ideaId', (req, res, next, id) => {
 });
 
 
-//GET ALL Minions
+//GET ALL IDEAS
 ideasRouter.get('/', (req, res, next) => {
     res.status(200).send(getAllFromDatabase('ideas'));
 });
 
-//GET Minion by ID
+//GET IDEAS by ID
 ideasRouter.get('/:ideaId', (req, res, next) => {
         res.status(200).send(req.idea);
 });
 
 //POST request
-ideasRouter.post('/', (req, res, next) => {
+ideasRouter.post('/', checkMillionDollarIdea, (req, res, next) => {
     const newMinion = addToDatabase('ideas', req.body);
     res.status(201).send(newMinion);
 });
 
 //PUT request
-ideasRouter.put('/:ideaId', (req, res, next) => {
+ideasRouter.put('/:ideaId', checkMillionDollarIdea, (req, res, next) => {
     const ideaToUpdate = updateInstanceInDatabase('ideas', req.body);
     res.status(200).send(ideaToUpdate);
 });
